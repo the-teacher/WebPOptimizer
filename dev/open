@@ -1,0 +1,8 @@
+touch .bash_history
+
+docker run \
+  -v ${PWD}/.bash_history:/root/.bash_history \
+  -v ${PWD}/images:/images \
+  -v ${PWD}/scripts:/scripts \
+  -it iamteacher/image_optimizer \
+  bash
