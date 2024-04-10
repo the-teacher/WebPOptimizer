@@ -15,6 +15,12 @@ convert_to_webp() {
     cwebp -q 80 "$file" -o "${file%.*}.webp"
 }
 
+# Function to optimize GIF images to webp format
+optimize_gif() {
+    local file="$1"
+    gif2webp "$file" -q 80 -m 6 -mt -o "${file%.*}.webp"
+}
+
 optimize_jpg() {
     local file="$1"
     jpegoptim --max=80 --strip-all "$file"
@@ -52,6 +58,9 @@ optimize_image() {
             ;;
         *.svg)
             optimize_svg "$file"
+            ;;
+        *.gif)
+            optimize_gif "$file"
             ;;
         *)
             echo "Unsupported file format: $file"
@@ -97,5 +106,11 @@ done
 # Find all PNG files in the specified directory and its subdirectories
 # excluding files whose path contains '/originals/'
 find "$directory" -type f -name "*.png" ! -path "*/originals/*" | while read -r file; do
+    process_image "$file"
+done
+
+# Find all GIF files in the specified directory and its subdirectories
+# excluding files whose path contains '/originals/'
+find "$directory" -type f -name "*.gif" ! -path "*/originals/*" | while read -r file; do
     process_image "$file"
 done
