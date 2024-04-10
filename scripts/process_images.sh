@@ -12,13 +12,13 @@ fi
 # function to convert a file to webp format
 convert_to_webp() {
     local file="$1"
-    cwebp -q 80 "$file" -o "${file%.*}.webp"
+    cwebp -q 85 "$file" -o "${file%.*}.webp"
 }
 
 # Function to optimize GIF images to webp format
 optimize_gif() {
     local file="$1"
-    gif2webp "$file" -q 80 -m 6 -mt -o "${file%.*}.webp"
+    gif2webp "$file" -q 85 -m 6 -mt -o "${file%.*}.webp"
 }
 
 optimize_jpg() {
