@@ -21,10 +21,17 @@ optimize_gif() {
     gif2webp "$file" -q 85 -m 6 -mt -o "${file%.*}.webp"
 }
 
+# function to AVIF format
+convert_to_avif() {
+    local file="$1"
+    convert "$file" -quality 85 "${file%.*}.avif"
+}
+
 optimize_jpg() {
     local file="$1"
     jpegoptim --max=80 --strip-all "$file"
     convert_to_webp "$file"
+    convert_to_avif "$file"
 }
 
 # It removes the transparent area around the image
@@ -38,6 +45,7 @@ optimize_png() {
     trim_png "$file"
     pngquant 32 --quality 40-80 --strip --speed 1 "$file" --force --output "$file" -v
     convert_to_webp "$file"
+    convert_to_avif "$file"
 }
 
 optimize_svg() {
