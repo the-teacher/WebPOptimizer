@@ -29,7 +29,19 @@ convert_to_avif() {
 
 optimize_jpg() {
     local file="$1"
-    jpegoptim --max=80 --strip-all "$file"
+
+    # Проверить ширину изображения
+    # local width
+    # width=$(identify -format "%w" "$file")
+    #
+    # if [ "$width" -gt 1000 ]; then
+    #     # Изменить размер изображения, если ширина больше 1000 пикселей
+    #     convert "$file" -resize 1000x "$file"
+    # fi
+
+    # Оптимизировать JPEG
+    jpegoptim --max=90 --strip-all "$file"
+
     convert_to_webp "$file"
     convert_to_avif "$file"
 }
