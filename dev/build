@@ -1,2 +1,0 @@
-touch .bash_history
-docker build -t iamteacher/image_optimizer -f dev/Dockerfile .
