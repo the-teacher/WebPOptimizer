@@ -9,10 +9,17 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
+# Function to remove metadata from any image
+remove_metadata() {
+    local file="$1"
+    exiftool -all= "$file"
+}
+
 # function to convert a file to webp format
 convert_to_webp() {
     local file="$1"
-    cwebp -q 85 "$file" -o "${file%.*}.webp"
+    # cwebp -q 85 "$file" -o "${file%.*}.webp"
+    echo "WebP conversion is skipped for now"
 }
 
 # Function to optimize GIF images to webp format
@@ -24,7 +31,8 @@ optimize_gif() {
 # function to AVIF format
 convert_to_avif() {
     local file="$1"
-    convert "$file" -quality 85 "${file%.*}.avif"
+    # convert "$file" -quality 85 "${file%.*}.avif"
+    echo "Avif conversion is skipped for now"
 }
 
 optimize_jpg() {
@@ -40,7 +48,9 @@ optimize_jpg() {
 # It removes the transparent area around the image
 trim_png() {
     local file="$1"
-    convert "$file" -trim "$file"
+    # In a common case, trim option removes any color around the image, not only transparent
+    # to remove only transparent area, we need to add a transparent border around the image and only then trim it
+    convert "$file" -bordercolor none -border 1x1 -trim +repage "$file"
 }
 
 optimize_png() {
@@ -59,6 +69,8 @@ optimize_svg() {
 # Function to optimize images based on their file format
 optimize_image() {
     local file="$1"
+
+    remove_metadata "$file"
 
     case "$file" in
         *.jpg|*.jpeg)
